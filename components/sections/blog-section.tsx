@@ -1,9 +1,10 @@
 import Link from "next/link"
 
+// Component ini didefinisikan sebagai Async Server Component (sudah benar)
 export default async function BlogSection() {
   let posts: any[] = []
   try {
-    // Gunakan path relatif agar fetch tidak gagal di dev
+    // Pembatasan 3 postingan sudah diatur di sini: pageSize=3
     const apiUrl = `/api/blog-list?page=1&pageSize=3`
     const res = await fetch(apiUrl, { cache: "no-store" })
     if (!res.ok) {
@@ -18,6 +19,7 @@ export default async function BlogSection() {
     posts = []
   }
 
+  // Baris return ini harusnya mengembalikan JSX dengan benar.
   return (
     <section id="blog" className="px-6 py-12">
       <div className="mx-auto max-w-6xl">
@@ -34,6 +36,7 @@ export default async function BlogSection() {
           </div>
         ) : (
           <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {/* Menggunakan posts.map, yang akan me-loop maksimal 3 item */}
             {posts.map((post) => (
               <article key={post.slug} className="rounded-lg border bg-card p-4">
                 <img
