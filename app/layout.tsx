@@ -11,26 +11,35 @@ import { ThemeProvider } from "@/components/theme-provider"
 import CookieConsent from "@/components/cookie-consent"
 
 export const metadata: Metadata = {
-  title: "Querino Janic — Jasa Pembuatan Website Profesional",
+  title: "Arif Tirtana — Jasa Pembuatan Website Profesional",
   description:
     "Landing page jasa pembuatan website modern & SEO-friendly. Next.js + Tailwind. Hubungi via WhatsApp atau form kontak.",
   metadataBase: new URL("https://ariftirtana.my.id"),
   openGraph: {
-    title: "Querino Janic — Jasa Pembuatan Website Profesional",
+    title: "Arif Tirtana — Jasa Pembuatan Website Profesional",
     description: "Website modern, cepat, dan SEO-friendly. Konsultasi gratis.",
     url: "https://ariftirtana.my.id",
-    siteName: "Querino Janic",
+    siteName: "Arif Tirtana",
     type: "website",
+    images: [
+      {
+        url: "https://ariftirtana.my.id/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Arif Tirtana — Jasa Pembuatan Website Profesional",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Querino Janic — Jasa Pembuatan Website Profesional",
+    title: "Arif Tirtana — Jasa Pembuatan Website Profesional",
     description: "Website modern, cepat, dan SEO-friendly. Konsultasi gratis.",
+    images: ["https://ariftirtana.my.id/og.png"],
   },
   alternates: {
     canonical: "/",
   },
-    generator: 'v0.app'
+    generator: 'ruangriung',
 }
 
 export default function RootLayout({
@@ -42,7 +51,7 @@ export default function RootLayout({
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Querino Janic",
+    name: "Arif Tirtana",
     url: "https://ariftirtana.my.id",
     email: "querinojanic@gmail.com",
     telephone: "+6281330763633",
