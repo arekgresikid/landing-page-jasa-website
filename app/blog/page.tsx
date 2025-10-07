@@ -1,42 +1,41 @@
+"use client"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 
 const PAGE_SIZE = 6
 
-export const metadata = {
-  title: "Blog — Querino Janic",
-  description: "Artikel seputar web development, SEO, dan desain.",
-}
+export default function BlogIndex() {
+  const searchParams = useSearchParams()
+  const [posts, setPosts] = useState<any[]>([])
+  const [categories, setCategories] = useState<string[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [category, setCategory] = useState("")
 
-export default async function BlogIndex({
-  searchParams,
-}: {
-  searchParams: { page?: string; category?: string }
-}) {
-  const page = Math.max(1, Number(searchParams?.page || 1))
-  const category = (searchParams?.category || "").trim()
-  const qs = new URLSearchParams({ page: String(page), pageSize: String(PAGE_SIZE) })
-  if (category) qs.set("category", category)
-
-  const res = await fetch(`/api/blog-list?${qs.toString()}`, { cache: "no-store" })
-  let data: any = { items: [], page, pageSize: PAGE_SIZE, totalPages: 1 }
-  if (res.ok) {
-    data = await res.json()
-  } else {
-    console.log("[v0] blog index fetch non-OK:", res.status)
-  }
-
-  const posts = (data?.items ?? []) as any[]
-  const totalPages = data?.totalPages || 1
-  const currentPage = data?.page || page
-  const categories: string[] = Array.isArray(data?.categories) ? data.categories : []
+  useEffect(() => {
+    const page = Math.max(1, Number(searchParams.get("page") || 1))
+    const cat = (searchParams.get("category") || "").trim()
+    setCurrentPage(page)
+    setCategory(cat)
+    const qs = new URLSearchParams({ page: String(page), pageSize: String(PAGE_SIZE) })
+    if (cat) qs.set("category", cat)
+    // Gunakan path relatif agar fetch tidak gagal di dev
+    const apiUrl = `/api/blog-list?${qs.toString()}`
+    fetch(apiUrl, { cache: "no-store" })
+      .then((res) => res.ok ? res.json() : Promise.resolve({ items: [], page, pageSize: PAGE_SIZE, totalPages: 1 }))
+      .then((data) => {
+        setPosts(data?.items ?? [])
+        setTotalPages(data?.totalPages || 1)
+        setCategories(Array.isArray(data?.categories) ? data.categories : [])
+      })
+  }, [searchParams])
 
   return (
     <section className="mx-auto max-w-5xl px-6 py-12 space-y-8">
       <header className="space-y-3">
         <h1 className="text-3xl md:text-4xl font-semibold text-pretty">Blog</h1>
         <p className="text-muted-foreground">Insight terbaru untuk membantu bisnis Anda tumbuh.</p>
-
-        {/* Category chips */}
         {categories.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-2">
             <Link
@@ -61,7 +60,6 @@ export default async function BlogIndex({
           </div>
         )}
       </header>
-
       <div className="grid gap-6 md:grid-cols-2">
         {posts.map((post) => {
           const dateStr = post?.date
@@ -100,7 +98,6 @@ export default async function BlogIndex({
           )
         })}
       </div>
-
       <nav className="flex items-center justify-between pt-6">
         {(() => {
           const prevPage = Math.max(1, currentPage - 1)

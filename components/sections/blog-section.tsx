@@ -3,7 +3,9 @@ import Link from "next/link"
 export default async function BlogSection() {
   let posts: any[] = []
   try {
-    const res = await fetch(`/api/blog-list?page=1&pageSize=3`, { cache: "no-store" })
+    // Gunakan path relatif agar fetch tidak gagal di dev
+    const apiUrl = `/api/blog-list?page=1&pageSize=3`
+    const res = await fetch(apiUrl, { cache: "no-store" })
     if (!res.ok) {
       console.log("[v0] BlogSection fetch non-OK:", res.status)
       posts = []
