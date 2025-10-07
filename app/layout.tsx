@@ -66,6 +66,9 @@ export default function RootLayout({
 
   return (
     <html lang="id" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <ThemeProvider>
           <Navbar />
