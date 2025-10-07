@@ -25,7 +25,7 @@ export default function Navbar() {
 		<header className="sticky top-0 z-50 bg-background/80 backdrop-blur border-b">
 			<div className="mx-auto max-w-6xl flex items-center justify-between px-6 h-14">
 				<Link href="/" className="font-semibold">
-					Querino Janic
+					Arif Tirtana
 				</Link>
 
 				<nav className="hidden md:flex items-center gap-6">
